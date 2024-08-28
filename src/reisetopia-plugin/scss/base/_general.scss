@@ -1,0 +1,49 @@
+/* General
+========================================================================== */
+html {
+    scroll-behavior: smooth;
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: $font-primary;
+    font-weight: 500;
+
+    --color-primary: var(--color-gray);
+    --color-secondary: var(--color-blue);
+
+    --bg-primary: var(--color-primary);
+    --bg-secondary: var(--color-secondary);
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+
+a {
+    text-decoration: none;
+    cursor: pointer;
+    color: var(--text-color);
+
+    &:hover {
+        text-decoration: none;
+        color: var(--hover-color);
+    }
+}
+
+img {
+    height: auto;
+    max-width: 100%;
+}
+
+.screen-reader-text {
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}

@@ -1,0 +1,16 @@
+/* Generate css variables.
+** All colors added in the $colors array will be generated as: --color-name: #000000;
+========================================================================== */
+body {
+    @each $name, $hex in $colors {
+        --color-#{$name}: #{$hex};
+    }
+}
+
+/* Max Width
+** This generates a max-width class that can be used to set a max-width on any element
+========================================================================== */
+.max-width {
+    max-width: 1920px;
+    margin: 0 auto;
+}

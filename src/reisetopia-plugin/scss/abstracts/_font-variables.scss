@@ -1,0 +1,32 @@
+/* Fonts
+========================================================================== */
+
+@font-face {
+    font-display: swap;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../../../../public/fonts/poppins-regular-webfont.woff2') format('woff2');
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 500;
+    src: url('../../../../public/fonts/poppins-medium-webfont.woff2') format('woff2');
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 700;
+    src: url('../../../../public/fonts/poppins-bold-webfont.woff2') format('woff2');
+}
+
+
+$font-fallback: -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, oxygen-sans, ubuntu, cantarell, 'Helvetica Neue', sans-serif;
+$font-primary: 'Poppins', $font-fallback;
+
+/* stylelint-enable */
