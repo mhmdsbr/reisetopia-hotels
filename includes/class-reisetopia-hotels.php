@@ -116,7 +116,9 @@ class Reisetopia_Hotels {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-reisetopia-hotels-public.php';
 
-		$this->loader = new Reisetopia_Hotels_Loader();
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-reisetopia-hotels-cpt.php';
+
+        $this->loader = new Reisetopia_Hotels_Loader();
 
 	}
 
@@ -146,10 +148,15 @@ class Reisetopia_Hotels {
 	 */
 	private function define_public_hooks() {
 
-		$plugin_public = new Reisetopia_Hotels_Public( $this->get_reisetopia_hotels(), $this->get_version() );
+		$reisetopia_hotels_public = new Reisetopia_Hotels_Public( $this->get_reisetopia_hotels(), $this->get_version() );
+        $reisetopia_hotels_cpt = new Reisetopia_Hotels_Cpt();
 
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+		$this->loader->add_action( 'wp_enqueue_scripts', $reisetopia_hotels_public, 'enqueue_styles' );
+		$this->loader->add_action( 'wp_enqueue_scripts', $reisetopia_hotels_public, 'enqueue_scripts' );
+
+        $this->loader->add_action('init', $reisetopia_hotels_cpt, 'register_reisetopia_hotel_cpt');
+        $this->loader->add_action('acf/init', $reisetopia_hotels_cpt, 'register_reisetopia_hotels_acf_fields');
+
 
 	}
 
