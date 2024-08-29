@@ -52,6 +52,8 @@ class Reisetopia_Hotels_Public {
 		$this->reisetopia_hotels = $reisetopia_hotels;
 		$this->version = $version;
 
+        add_shortcode('reisetopia-hotels', [$this, 'reisetopia_hotels_shortcode']);
+
 	}
 
 	/**
@@ -98,9 +100,50 @@ class Reisetopia_Hotels_Public {
 
 		wp_enqueue_script( $this->reisetopia_hotels, plugin_dir_url( __FILE__ ) . 'assets/js/app.js', ['jquery'], $this->version, true );
 
-        wp_localize_script( $this->reisetopia_hotels, 'reisetopiaHotelsAjax', array(
-            'ajaxurl' => admin_url( 'admin-ajax.php' ),
+        wp_localize_script( $this->reisetopia_hotels, 'reisetopiaHotels', array(
+            'ajax_url' => admin_url( 'admin-ajax.php' ),
+            'rest_url' => get_rest_url(null, 'reisetopia-hotels/v1/hotels'),
         ) );
 	}
+
+    /**
+     * Shortcode [reisetopia-hotels] implementation.
+     *
+     * @return string
+     */
+    function reisetopia_hotels_shortcode(): string
+    {
+        ob_start();
+        ?>
+        <div class="reisetopia-hotels-container">
+            <label for="endpoint-select">Select Endpoint:</label>
+            <select id="endpoint-select">
+                <option value="rest">REST API</option>
+                <option value="ajax">AJAX API</option>
+            </select>
+
+            <label for="filter-name">Hotel Name:</label>
+            <input type="text" id="filter-name" placeholder="Enter hotel name">
+
+            <label for="filter-location">Location:</label>
+            <input type="text" id="filter-location" placeholder="Enter location">
+
+            <button id="fetch-hotels">Search Hotels</button>
+
+            <div id="hotels-list"></div>
+        </div>
+        <?php
+        return ob_get_clean();
+    }
+
+    /**
+     * AJAX handler for fetching hotels.
+     */
+    function reisetopia_handle_ajax_request() {
+        check_ajax_referer('reisetopia_hotels_nonce', 'nonce');
+
+        $api = new Reisetopia_Hotels_Ajax_API();
+        $api->handle_get_all_hotels();
+    }
 
 }

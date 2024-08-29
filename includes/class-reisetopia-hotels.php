@@ -163,10 +163,10 @@ class Reisetopia_Hotels {
             $this->loader->add_action('acf/init', $reisetopia_hotels_cpt, 'register_reisetopia_hotels_acf_fields');
         }
 
-        // Registers REST routes
+        // Registers REST Endpoint
         $this->loader->add_action('rest_api_init', $reisetopia_hotels_rest_api, 'register_routes');
 
-        // Ajax actions
+        // Registers Ajax Endpoint
         $this->loader->add_action('wp_ajax_reisetopia_hotels_get_all', $reisetopia_hotels_ajax_api, 'handle_get_all_hotels');
         $this->loader->add_action('wp_ajax_nopriv_reisetopia_hotels_get_all', $reisetopia_hotels_ajax_api, 'handle_get_all_hotels');
         $this->loader->add_action('wp_ajax_reisetopia_hotels_get_by_id', $reisetopia_hotels_ajax_api, 'handle_get_hotel_by_id');
@@ -174,6 +174,10 @@ class Reisetopia_Hotels {
 
         // Adds ajax nonce in DOM footer
         $this->loader->add_action('wp_footer', $reisetopia_hotels_ajax_api, 'output_ajax_nonce');
+
+        // Adds ajax to show the hotels
+        $this->loader->add_action( 'wp_ajax_get_all_hotels', $reisetopia_hotels_public, 'reisetopia_handle_ajax_request' );
+        $this->loader->add_action( 'wp_ajax_nopriv_get_all_hotels', $reisetopia_hotels_public, 'reisetopia_handle_ajax_request' );
 
 	}
 
