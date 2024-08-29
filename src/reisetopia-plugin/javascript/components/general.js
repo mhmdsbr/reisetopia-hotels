@@ -88,7 +88,7 @@ $(document).ready(function () {
     // Event listener for dropdown
     $('#endpoint-select').on('change', function () {
         const selectedEndpoint = $(this).val();
-        const filters = {name: '', location: 'Germany'};
+        const filters = {name: '', location: 'Berlin'};
 
         // Clear the list before fetching new data
         const $hotelsList = $('#hotels-list');

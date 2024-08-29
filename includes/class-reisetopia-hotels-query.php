@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * Class Reisetopia_Hotels_Query
  *

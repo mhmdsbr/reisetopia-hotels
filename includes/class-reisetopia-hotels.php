@@ -115,7 +115,8 @@ class Reisetopia_Hotels {
         // Include the class that defines the AJAX API handlers for querying hotel data.
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-reisetopia-hotels-ajax-api.php';
 
-        // Include the class that handles hotel queries and filtering logic.
+        // Include the class that handles hotels queries and filtering logic.
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-reisetopia-hotels-manager.php';
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-reisetopia-hotels-query.php';
 
         $this->loader = new Reisetopia_Hotels_Loader();

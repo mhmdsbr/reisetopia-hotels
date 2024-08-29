@@ -19,23 +19,10 @@ class Reisetopia_Hotels_Ajax_API {
             return;
         }
 
-        // Sanitize and collect parameters
-        $query = new Reisetopia_Hotels_Query();
-
-        if (!empty($_POST['name'])) {
-            $query->set_name_filter(sanitize_text_field($_POST['name']));
-        }
-
-        if (!empty($_POST['location'])) {
-            $query->set_location_filter(sanitize_text_field($_POST['location']));
-        }
-
-        if (!empty($_POST['maxPrice'])) {
-            $query->set_max_price_filter((int) sanitize_text_field($_POST['maxPrice']));
-        }
-
-        // Query the hotels
-        $hotels = $query->get_hotels();
+        $name = sanitize_text_field($_POST['name']);
+        $location = sanitize_text_field($_POST['location']);
+        $max_price = sanitize_text_field($_POST['maxPrice']);
+        $hotels = Reisetopia_Hotels_Manager::filter_hotels($name, $location, $max_price);
 
         // Return the list of hotels
         wp_send_json_success($hotels);
@@ -51,9 +38,7 @@ class Reisetopia_Hotels_Ajax_API {
             return;
         }
 
-        // Sanitize and collect the ID parameter
         $id = isset($_POST['id']) ? absint($_POST['id']) : 0;
-
         if (!$id) {
             wp_send_json_error(['message' => 'Invalid hotel ID'], 400);
             return;
@@ -65,8 +50,7 @@ class Reisetopia_Hotels_Ajax_API {
         }
 
         // Get the hotel data
-        $query = new Reisetopia_Hotels_Query();
-        $hotel = $query->format_hotel_response($id);
+        $hotel = Reisetopia_Hotels_Manager::get_hotel_data_by_id($id);
 
         if (empty($hotel)) {
             wp_send_json_error(['message' => 'Hotel not found'], 404);

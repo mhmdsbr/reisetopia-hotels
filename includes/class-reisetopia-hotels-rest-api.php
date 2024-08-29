@@ -63,25 +63,10 @@ class Reisetopia_Hotels_Rest_API {
      * @return WP_REST_Response The response object containing the filtered list of hotels or an error message.
      */
     public function get_all_hotels(WP_REST_Request $request): WP_REST_Response {
-        $query = new Reisetopia_Hotels_Query();
-
-        // Filter by name if provided
-        if ($name = $request->get_param('name')) {
-            $query->set_name_filter($name);
-        }
-
-        // Filter by location if provided
-        if ($location = $request->get_param('location')) {
-            $query->set_location_filter($location);
-        }
-
-        // Filter by maximum price if provided
-        if ($max_price = $request->get_param('max_price')) {
-            $query->set_max_price_filter((int) $max_price);
-        }
-
-        // Execute the query to fetch hotels
-        $hotels = $query->get_hotels();
+        $name = $request->get_param('name');
+        $location = $request->get_param('location');
+        $max_price = $request->get_param('max_price');
+        $hotels = Reisetopia_Hotels_Manager::filter_hotels($name, $location, $max_price);
 
         // Check if any hotels were found and format the response
         if (empty($hotels)) {
@@ -105,6 +90,7 @@ class Reisetopia_Hotels_Rest_API {
      */
     public function get_hotel_by_id(WP_REST_Request $request): WP_REST_Response {
         $id = (int) $request['id'];
+        $hotel = Reisetopia_Hotels_Manager::get_hotel_data_by_id($id);
 
         // Validate the post type for the given ID
         if (get_post_type($id) !== 'reisetopia_hotel') {
@@ -112,10 +98,6 @@ class Reisetopia_Hotels_Rest_API {
             error_log($error_message);
             return new WP_REST_Response(['message' => 'Hotel not found'], 404);
         }
-
-        // Get and format the hotel data
-        $query = new Reisetopia_Hotels_Query();
-        $hotel = $query->format_hotel_response($id);
 
         // Handle errors during formatting
         if (empty($hotel)) {
