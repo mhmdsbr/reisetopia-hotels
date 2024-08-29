@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Class Reisetopia_Hotels_Ajax_API
+ *
+ * This class handles the AJAX requests for querying hotel data.
+ * It includes methods for fetching all hotels with optional filters,
+ * as well as fetching a single hotel by its ID.
+ */
 class Reisetopia_Hotels_Ajax_API {
 
     /**
@@ -13,59 +20,22 @@ class Reisetopia_Hotels_Ajax_API {
         }
 
         // Sanitize and collect parameters
-        $name = isset($_POST['name']) ? sanitize_text_field($_POST['name']) : '';
-        $location = isset($_POST['location']) ? sanitize_text_field($_POST['location']) : '';
-        $max_price = isset($_POST['maxPrice']) ? intval(sanitize_text_field($_POST['maxPrice'])) : 0;
+        $query = new Reisetopia_Hotels_Query();
 
-        // Build query args
-        $args = [
-            'post_type' => 'reisetopia_hotel',
-            'posts_per_page' => -1,
-            'post_status' => 'publish',
-            'meta_query' => [],
-        ];
-
-        if (!empty($name)) {
-            $args['s'] = $name;
+        if (!empty($_POST['name'])) {
+            $query->set_name_filter(sanitize_text_field($_POST['name']));
         }
 
-        if (!empty($location)) {
-            $args['meta_query'][] = [
-                'relation' => 'OR',
-                [
-                    'key'     => 'city',
-                    'value'   => $location,
-                    'compare' => 'LIKE',
-                ],
-                [
-                    'key'     => 'country',
-                    'value'   => $location,
-                    'compare' => 'LIKE',
-                ],
-            ];
+        if (!empty($_POST['location'])) {
+            $query->set_location_filter(sanitize_text_field($_POST['location']));
         }
 
-        if ($max_price > 0) {
-            $args['meta_query'][] = [
-                'key'     => 'price_max',
-                'value'   => $max_price,
-                'type'    => 'NUMERIC',
-                'compare' => '<=',
-            ];
+        if (!empty($_POST['maxPrice'])) {
+            $query->set_max_price_filter((int) sanitize_text_field($_POST['maxPrice']));
         }
 
         // Query the hotels
-        $query = new WP_Query($args);
-        $hotels = [];
-
-        if ($query->have_posts()) {
-            while ($query->have_posts()) {
-                $query->the_post();
-                $hotels[] = $this->format_hotel_response(get_the_ID());
-            }
-        }
-
-        wp_reset_postdata();
+        $hotels = $query->get_hotels();
 
         // Return the list of hotels
         wp_send_json_success($hotels);
@@ -95,39 +65,14 @@ class Reisetopia_Hotels_Ajax_API {
         }
 
         // Get the hotel data
-        $hotel = $this->format_hotel_response($id);
+        $query = new Reisetopia_Hotels_Query();
+        $hotel = $query->format_hotel_response($id);
 
         if (empty($hotel)) {
             wp_send_json_error(['message' => 'Hotel not found'], 404);
         } else {
             wp_send_json_success($hotel);
         }
-    }
-
-    /**
-     * Formats hotel data for response.
-     *
-     * @param int $id The ID of the hotel post.
-     * @return array The formatted hotel data.
-     */
-    private function format_hotel_response(int $id): array {
-        $hotel_data = [
-            'id' => $id,
-            'title' => get_the_title($id),
-            'city' => get_field('city', $id),
-            'country' => get_field('country', $id),
-            'priceRange' => [
-                'min' => (int) get_field('price_min', $id),
-                'max' => (int) get_field('price_max', $id),
-            ],
-        ];
-
-        $rating = get_field('rating', $id);
-        if (!empty($rating)) {
-            $hotel_data['rating'] = (float) $rating;
-        }
-
-        return $hotel_data;
     }
 
     /**
