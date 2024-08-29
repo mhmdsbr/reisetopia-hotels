@@ -81,23 +81,37 @@ const fetchHotelsAjax = (filters = {}) => {
 };
 
 
+const updateHotelsApi = () => {
+    const selectedEndpoint = $('#endpoint-select').val();
+    const filters = {
+        name: $('#filter-name').val(),
+        location: $('#filter-location').val()
+    };
+
+    // Clear the list before fetching new data
+    const $hotelsList = $('#hotels-list');
+    $hotelsList.empty();
+
+    if (selectedEndpoint === 'rest') {
+        fetchHotelsRestApi(filters);
+    } else if (selectedEndpoint === 'ajax') {
+        fetchHotelsAjax(filters);
+    }
+};
+
+const onEndpointChange = () => {
+    updateHotelsApi();
+};
+
+const onInputChange = () => {
+    updateHotelsApi();
+};
+
 $(document).ready(function () {
     // Default load
     fetchHotelsRestApi();
 
-    // Event listener for dropdown
-    $('#endpoint-select').on('change', function () {
-        const selectedEndpoint = $(this).val();
-        const filters = {name: '', location: 'Berlin'};
-
-        // Clear the list before fetching new data
-        const $hotelsList = $('#hotels-list');
-        $hotelsList.empty();
-
-        if (selectedEndpoint === 'rest') {
-            fetchHotelsRestApi(filters);
-        } else if (selectedEndpoint === 'ajax') {
-            fetchHotelsAjax(filters);
-        }
-    });
+    // Initialize event listeners
+    $('#endpoint-select').on('change', onEndpointChange);
+    $('#filter-name, #filter-location').on('input', onInputChange);
 });

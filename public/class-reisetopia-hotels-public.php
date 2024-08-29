@@ -128,8 +128,6 @@ class Reisetopia_Hotels_Public {
             <label for="filter-location">Location:</label>
             <input type="text" id="filter-location" placeholder="Enter location">
 
-            <button id="fetch-hotels">Search Hotels</button>
-
             <div id="hotels-list"></div>
         </div>
         <?php
