@@ -1,0 +1,49 @@
+.ra-hotels-list {
+
+  &__head {
+    text-align: center;
+    margin-bottom: 20px;
+
+    h4 {
+      font-size: map-get($text-sizes, 2xl);
+      margin: 0;
+      text-align: left;
+      color: map-get($colors, 'secondary');
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  &__item {
+    background-color: map-get($colors, 'grey');
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    h5 {
+      font-size: map-get($text-sizes, xl);
+      margin: 0 0 8px 0;
+      color: map-get($colors, 'white');
+    }
+
+    p {
+      font-size: map-get($text-sizes, sm);
+      font-weight: 500;
+      margin: 5px 0;
+      color: map-get($colors, 'gainsboro');
+
+      span {
+        font-weight: bold;
+        color: map-get($colors, 'white');
+      }
+    }
+
+    &:hover {
+      background-color: map-get($colors, 'eclipse');
+    }
+  }
+}

@@ -114,23 +114,9 @@ class Reisetopia_Hotels_Public {
     function reisetopia_hotels_shortcode(): string
     {
         ob_start();
-        ?>
-        <div class="reisetopia-hotels-container">
-            <label for="endpoint-select">Select Endpoint:</label>
-            <select id="endpoint-select">
-                <option value="rest">REST API</option>
-                <option value="ajax">AJAX API</option>
-            </select>
 
-            <label for="filter-name">Hotel Name:</label>
-            <input type="text" id="filter-name" placeholder="Enter hotel name">
+        include plugin_dir_path( __FILE__ ) . 'templates/reisetopia-hotels-display.php';
 
-            <label for="filter-location">Location:</label>
-            <input type="text" id="filter-location" placeholder="Enter location">
-
-            <div id="hotels-list"></div>
-        </div>
-        <?php
         return ob_get_clean();
     }
 

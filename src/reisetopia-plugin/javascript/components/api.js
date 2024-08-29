@@ -1,6 +1,8 @@
+import { renderHotelItem } from './renderHotelItem.js';
+
 const $ = jQuery.noConflict();
 
-const fetchHotelsRestApi = (filters = {}) => {
+export const fetchHotelsRestApi = (filters = {}) => {
     const url = new URL(reisetopiaHotels.rest_url);
 
     // Apply filters
@@ -14,20 +16,13 @@ const fetchHotelsRestApi = (filters = {}) => {
     fetch(url.toString())
         .then(response => response.json())
         .then(data => {
-            const $hotelsList = $('#hotels-list');
+            const $hotelsList = $('#js-hotels-list');
             $hotelsList.empty();
             if (data.length === 0) {
                 $hotelsList.html('<p>No hotels found</p>');
             } else {
                 data.forEach(hotel => {
-                    const hotelItem = `
-                        <div class="hotel-item">
-                            <h3>${hotel.title}</h3>
-                            <p><span>Location:</span>${hotel.country}, ${hotel.city}</p>
-                            <p><span>Price Range:</span>${hotel['priceRange'].min}, ${hotel['priceRange'].max}</p>
-                            <p><span>Rating:</span>${hotel.rating}</p>
-                        </div>
-                    `;
+                    const hotelItem = renderHotelItem(hotel);
                     $hotelsList.append(hotelItem);
                 });
             }
@@ -37,8 +32,7 @@ const fetchHotelsRestApi = (filters = {}) => {
         });
 };
 
-
-const fetchHotelsAjax = (filters = {}) => {
+export const fetchHotelsAjax = (filters = {}) => {
     const url = new URL(reisetopiaHotels.ajax_url);
 
     // Add action parameter for AJAX handler
@@ -54,20 +48,13 @@ const fetchHotelsAjax = (filters = {}) => {
             ...filters // Include filters
         },
         success: function(data) {
-            const $hotelsList = $('#hotels-list');
+            const $hotelsList = $('#js-hotels-list');
             $hotelsList.empty();
             if (data.success && data.data.length === 0) {
                 $hotelsList.html('<p>No hotels found</p>');
             } else if (data.success) {
                 data.data.forEach(hotel => {
-                    const hotelItem = `
-                        <div class="hotel-item">
-                            <h3>${hotel.title}</h3>
-                            <p><span>Location:</span>${hotel.country}, ${hotel.city}</p>
-                            <p><span>Price Range:</span>${hotel['priceRange'].min}, ${hotel['priceRange'].max}</p>
-                            <p><span>Rating:</span>${hotel.rating}</p>
-                        </div>
-                    `;
+                    const hotelItem = renderHotelItem(hotel);
                     $hotelsList.append(hotelItem);
                 });
             } else {
@@ -80,16 +67,15 @@ const fetchHotelsAjax = (filters = {}) => {
     });
 };
 
-
-const updateHotelsApi = () => {
-    const selectedEndpoint = $('#endpoint-select').val();
+export const updateHotelsApi = () => {
+    const selectedEndpoint = $('#js-endpoint-select').val();
     const filters = {
-        name: $('#filter-name').val(),
-        location: $('#filter-location').val()
+        name: $('#js-filter-name').val(),
+        location: $('#js-filter-location').val()
     };
 
     // Clear the list before fetching new data
-    const $hotelsList = $('#hotels-list');
+    const $hotelsList = $('#js-hotels-list');
     $hotelsList.empty();
 
     if (selectedEndpoint === 'rest') {
@@ -98,20 +84,3 @@ const updateHotelsApi = () => {
         fetchHotelsAjax(filters);
     }
 };
-
-const onEndpointChange = () => {
-    updateHotelsApi();
-};
-
-const onInputChange = () => {
-    updateHotelsApi();
-};
-
-$(document).ready(function () {
-    // Default load
-    fetchHotelsRestApi();
-
-    // Initialize event listeners
-    $('#endpoint-select').on('change', onEndpointChange);
-    $('#filter-name, #filter-location').on('input', onInputChange);
-});

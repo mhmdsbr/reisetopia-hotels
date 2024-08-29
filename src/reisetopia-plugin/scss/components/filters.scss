@@ -1,0 +1,53 @@
+.ra-hotels-filters {
+
+  &__head {
+    text-align: center;
+    margin-bottom: 15px;
+
+    h4 {
+      font-size: map-get($text-sizes, 2xl);
+      text-align: left;
+      margin: 0;
+      color: map-get($colors, 'white');
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    .item {
+      display: flex;
+      flex-direction: column;
+
+      label {
+        margin-bottom: 5px;
+        font-size: map-get($text-sizes, sm);
+        color: map-get($colors, 'white');
+      }
+
+      input,
+      select {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        padding: 10px;
+        border-radius: 4px;
+        font-size: map-get($text-sizes, sm);
+        background-color: map-get($colors, 'white');
+        color: #26131b;
+        border: 1px solid map-get($colors, 'secondary');
+
+        &:focus {
+          outline: none;
+          border-color: map-get($colors, 'secondary');
+        }
+      }
+
+      input::placeholder {
+        color: #999;
+      }
+    }
+  }
+}

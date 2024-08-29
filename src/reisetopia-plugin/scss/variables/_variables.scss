@@ -1,14 +1,12 @@
 /* Colors
 ========================================================================== */
 $colors: (
-    'green': #61e9b0,
-    'red': #f76d6d,
-    'yellow': #ffd86f,
-    'black': #000000,
+    'primary': #4d7a7a,
+    'grey' : #6c7f7f,
+    'secondary': #26131b,
     'white': #ffffff,
-    'gray': #808080,
-    'blue': #142b66,
-    'orange': #fd8204,
+    'eclipse': #3a3a3a,
+    'gainsboro': #efeded,
 );
 
 /* Sizes
@@ -29,40 +27,3 @@ $text-sizes: (
     xs: 12px,
     xxs: 10px,
 );
-
-$spacers: (
-    0: 0,
-    1: 4px,
-    2: 8px,
-    3: 16px,
-    4: 20px,
-    5: 24px,
-    6: 32px,
-    7: 40px,
-    8: 48px,
-    9: 56px,
-    10: 64px,
-    11: 72px,
-    12: 80px,
-    13: 128px,
-    14: 256px,
-);
-
-$grid-breakpoints: (
-    xs: 0,
-    sm: 576px,
-    md: 768px,
-    lg: 992px,
-    xl: 1200px,
-    xxl: 1400px
-);
-
-$container-max-widths: (
-    sm: 540px,
-    md: 720px,
-    lg: 960px,
-    xl: 1140px,
-    xxl: 1600px
-);
-
-$grid-gutter-width: 3rem;
