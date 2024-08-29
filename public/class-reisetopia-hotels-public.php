@@ -96,8 +96,11 @@ class Reisetopia_Hotels_Public {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->reisetopia_hotels, plugin_dir_url( __FILE__ ) . 'assets/js/app.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->reisetopia_hotels, plugin_dir_url( __FILE__ ) . 'assets/js/app.js', ['jquery'], $this->version, true );
 
+        wp_localize_script( $this->reisetopia_hotels, 'reisetopiaHotelsAjax', array(
+            'ajaxurl' => admin_url( 'admin-ajax.php' ),
+        ) );
 	}
 
 }
