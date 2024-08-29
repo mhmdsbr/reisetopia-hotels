@@ -18,7 +18,7 @@ export const fetchHotelsRestApi = (filters = {}) => {
         .then(data => {
             const $hotelsList = $('#js-hotels-list');
             $hotelsList.empty();
-            if (data.length === 0) {
+            if (!data || !Array.isArray(data) || data.length === 0) {
                 $hotelsList.html('<p>No hotels found</p>');
             } else {
                 data.forEach(hotel => {
