@@ -40,6 +40,13 @@ class Reisetopia_Hotels_Public {
 	 */
 	private string $version;
 
+    /**
+     * Variable to hold the manifest file contents
+     *
+     * @var array|false
+     */
+    protected array|false $manifest = [];
+
 	/**
 	 * Initialize the class and set its properties.
 	 *
@@ -75,7 +82,15 @@ class Reisetopia_Hotels_Public {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->reisetopia_hotels, plugin_dir_url( __FILE__ ) . 'assets/css/app.css', array(), $this->version, 'all' );
+        // Load the manifest file
+        $this->manifest = $this->get_manifest();
+
+        if (is_array($this->manifest)) {
+            $styles = $this->load_asset_from_manifest('app.css');
+            if ($styles) {
+                wp_enqueue_style($this->reisetopia_hotels, plugin_dir_url(__FILE__) . 'assets/css/' . $styles, array(), $this->version, 'all');
+            }
+        }
 
 	}
 
@@ -87,7 +102,6 @@ class Reisetopia_Hotels_Public {
 	public function enqueue_scripts() {
 
 		/**
-		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
 		 * defined in Reisetopia_Hotels_Loader as all the hooks are defined
@@ -98,13 +112,54 @@ class Reisetopia_Hotels_Public {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->reisetopia_hotels, plugin_dir_url( __FILE__ ) . 'assets/js/app.js', ['jquery'], $this->version, true );
+        // Load the manifest file
+        $this->manifest = $this->get_manifest();
 
-        wp_localize_script( $this->reisetopia_hotels, 'reisetopiaHotels', array(
-            'ajax_url' => admin_url( 'admin-ajax.php' ),
-            'rest_url' => get_rest_url(null, 'reisetopia-hotels/v1/hotels'),
-        ) );
+        // Check if manifest is an array
+        if (is_array($this->manifest)) {
+            $scripts = $this->load_asset_from_manifest('app.js');
+            if ($scripts) {
+                wp_enqueue_script($this->reisetopia_hotels, plugin_dir_url(__FILE__) . 'assets/js/' . $scripts, ['jquery'], $this->version, true);
+
+                wp_localize_script($this->reisetopia_hotels, 'reisetopiaHotels', array(
+                    'ajax_url' => admin_url('admin-ajax.php'),
+                    'rest_url' => get_rest_url(null, 'reisetopia-hotels/v1/hotels'),
+                ));
+            }
+        }
 	}
+
+    /**
+     * Fetch the manifest.json file if it is available
+     *
+     * @return false|array
+     */
+    private function get_manifest(): array|false
+    {
+        $manifest_path = plugin_dir_path(__FILE__) . 'assets/manifest.json';
+        if (file_exists($manifest_path)) {
+            $manifest_content = file_get_contents($manifest_path);
+            $manifest = json_decode($manifest_content, true);
+            return $manifest ?: false;
+        }
+        return false;
+    }
+
+    /**
+     * Check if the asset is in the manifest and return the filename
+     *
+     * @param string $file
+     * @return false|string
+     */
+    private function load_asset_from_manifest(string $file): bool|string
+    {
+        if (is_array($this->manifest) && isset($this->manifest[$file])) {
+            $paths = explode('/', $this->manifest[$file]);
+            return end($paths);
+        }
+        return false;
+    }
+
 
     /**
      * Shortcode [reisetopia-hotels] implementation.
