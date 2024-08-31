@@ -4,7 +4,7 @@ import { onEndpointChange, onInputChange } from './events.js';
 const $ = jQuery.noConflict();
 
 $(document).ready(function () {
-    // Default load
+    // Default API load
     fetchHotelsRestApi();
 
     // Initialize event listeners

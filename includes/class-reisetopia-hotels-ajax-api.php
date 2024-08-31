@@ -19,9 +19,9 @@ class Reisetopia_Hotels_Ajax_API {
             return;
         }
 
-        $name = sanitize_text_field($_POST['name']);
-        $location = sanitize_text_field($_POST['location']);
-        $max_price = sanitize_text_field($_POST['maxPrice']);
+        $name = isset($_POST['name']) ? sanitize_text_field($_POST['name']) : '';
+        $location = isset($_POST['location']) ? sanitize_text_field($_POST['location']) : '';
+        $max_price = isset($_POST['max_price']) ? sanitize_text_field($_POST['max_price']) : '';
         $hotels = Reisetopia_Hotels_Manager::filter_hotels($name, $location, $max_price);
 
         // Return the list of hotels

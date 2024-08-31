@@ -5,7 +5,7 @@
  *
  * This class handles the creation of REST API endpoints for querying hotel data.
  * It includes routes for fetching all hotels with optional filters, as well as fetching
- * a single hotel by its ID. The class also implements error handling and logging for edge cases.
+ * a single hotel by its ID.
  */
 class Reisetopia_Hotels_Rest_API {
 
@@ -56,16 +56,16 @@ class Reisetopia_Hotels_Rest_API {
      * Handles the request to get all hotels with optional filters.
      *
      * This method processes the REST API request to retrieve a list of hotels. It supports filtering by
-     * name, location, and maximum price. The method constructs a `WP_Query` based on the provided parameters
-     * and returns the filtered list of hotels. It also logs errors if any issues arise during data processing.
+     * name, location, and maximum price. The method constructs a `WP_Query` based on the provided parameters using Reisetopia_Hotels_Manager
+     * and returns the filtered list of hotels.
      *
      * @param WP_REST_Request $request The request object containing any query parameters.
      * @return WP_REST_Response The response object containing the filtered list of hotels or an error message.
      */
     public function get_all_hotels(WP_REST_Request $request): WP_REST_Response {
-        $name = $request->get_param('name');
-        $location = $request->get_param('location');
-        $max_price = $request->get_param('max_price');
+        $name = $request->get_param('name') ?? '';
+        $location = $request->get_param('location') ?? '';
+        $max_price = $request->get_param('max_price') ?? 0;
         $hotels = Reisetopia_Hotels_Manager::filter_hotels($name, $location, $max_price);
 
         // Check if any hotels were found and format the response
@@ -82,8 +82,7 @@ class Reisetopia_Hotels_Rest_API {
      * Handles the request to get a single hotel by ID.
      *
      * This method processes the REST API request to retrieve a single hotel by its ID. It validates the ID,
-     * checks if the post type is correct, and returns the hotel's data if found. It also handles errors and
-     * logs them if the hotel is not found or if other issues arise.
+     * checks if the post type is correct, and returns the hotel's data if found.
      *
      * @param WP_REST_Request $request The request object containing the hotel ID.
      * @return WP_REST_Response The response object containing the hotel's data or an error message.
