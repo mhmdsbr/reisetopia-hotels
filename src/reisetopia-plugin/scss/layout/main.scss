@@ -9,10 +9,12 @@
     flex-direction: column;
     justify-content: center;
     gap: 22px;
-    height: 80vh;
+    height: 100vh;
+    min-height: 600px;
 
     @media (min-width: 1024px) {
       flex-direction: row;
+      height: 80vh;
     }
 
     .ra-hotels-filters {
