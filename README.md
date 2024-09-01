@@ -53,14 +53,26 @@ During development, you can use the following command to start a watch task that
 
 ## Building for Production
 
-When you're ready to build the final production, run:
+When you're ready to build the final production, for assets run:
    ```bash
    npm run build
    ```
-To build the final assets. Then run:
+And then run:
    ```bash
    npm run build:plugin
    ```
 To generate the build directory and zip file.
 
 Enjoy.
+
+
+## Changelog
+
+### v1.1.0 (2024-09-01)
+- **Added:** Sorting feature by hotel name (ascending and descending).
+- **Added:** Sorting feature by hotel minimum and maximum price (ascending and descending).
+
+### v1.0.0 (2024-08-30)
+- **Initial Release:** Fetch hotel data from REST and AJAX API endpoints.
+- **Feature:** Advanced filtering by name, location, and maximum price.
+- **Feature:** WordPress shortcode `[reisetopia_hotels]` for easy integration.
