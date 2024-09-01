@@ -1,5 +1,8 @@
 # Reisetopia Hotels Listing Plugin
 
+
+![Project Demo](screenshot.png)
+
 This WordPress plugin allows you to fetch and display hotel data from two different APIs, with various filtering options.
 
 ## Table of Contents
