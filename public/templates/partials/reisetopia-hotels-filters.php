@@ -18,6 +18,21 @@
                 <option value="ajax">AJAX API</option>
             </select>
         </div>
+        <div class="item">
+            <label for="js-sort-attribute">Sort by:</label>
+            <select id="js-sort-attribute">
+                <option value="title">Name</option>
+                <option value="price_min">Minimum Price</option>
+                <option value="price_max">Maximum Price</option>
+            </select>
+        </div>
+        <div class="item">
+            <label for="js-sort-order">Order:</label>
+            <select id="js-sort-order">
+                <option value="ASC">Ascending</option>
+                <option value="DESC">Descending</option>
+            </select>
+        </div>
     </div>
 </div>
 

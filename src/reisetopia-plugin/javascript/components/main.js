@@ -9,5 +9,7 @@ $(document).ready(function () {
 
     // Initialize event listeners
     $('#js-endpoint-select').on('change', onEndpointChange);
+    $('#js-sort-order').on('change', onEndpointChange);
+    $('#js-sort-attribute').on('change', onEndpointChange);
     $('#js-filter-name, #js-filter-location').on('input', onInputChange);
 });

@@ -10,7 +10,7 @@ class Reisetopia_Hotels_Manager {
     public static function get_all_hotels(): array
     {
         // Call the filter_hotels method with empty strings to retrieve all hotels
-        return self::filter_hotels('', '', '');
+        return self::filter_hotels('', '', '', '', '');
     }
 
     /**
@@ -49,9 +49,11 @@ class Reisetopia_Hotels_Manager {
      * @param empty|string $name The name filter for the hotels.
      * @param string $location The location filter for the hotels.
      * @param int|string $max_price The maximum price filter for the hotels.
+     * @param string $sort_attribute The attribute to sort by (e.g., 'title', 'price_min', 'price_max').
+     * @param string $sort_order The sorting order ('ASC' or 'DESC').
      * @return array An array of hotels matching the filters.
      */
-    public static function filter_hotels(string $name, string $location, int|string $max_price): array
+    public static function filter_hotels(string $name, string $location, int|string $max_price, string $sort_attribute, string $sort_order): array
     {
         // Create a new instance of Reisetopia_Hotels_Query for filtering hotels
         $hotel_query = new Reisetopia_Hotels_Query();
@@ -67,6 +69,10 @@ class Reisetopia_Hotels_Manager {
         // Apply the maximum price filter if a max price is provided
         if (!empty($max_price)) {
             $hotel_query->set_max_price_filter($max_price);
+        }
+        // Apply sorting if sorting parameters are provided
+        if (!empty($sort_attribute) && !empty($sort_order)) {
+            $hotel_query->set_sorting($sort_attribute, $sort_order);
         }
 
         return $hotel_query->get_hotels();

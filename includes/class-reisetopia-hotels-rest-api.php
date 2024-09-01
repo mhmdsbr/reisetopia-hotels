@@ -35,6 +35,16 @@ class Reisetopia_Hotels_Rest_API {
                     'validate_callback' => fn($param) => is_numeric($param),
                     'sanitize_callback' => fn($param) => (int) sanitize_text_field($param),
                 ],
+                'sort_attribute' => [
+                    'validate_callback' => fn($param) => in_array($param, ['title', 'price_min', 'price_max']),
+                    'sanitize_callback' => 'sanitize_text_field',
+                    'default' => 'title',
+                ],
+                'sort_order' => [
+                    'validate_callback' => fn($param) => in_array(strtoupper($param), ['ASC', 'DESC']),
+                    'sanitize_callback' => 'sanitize_text_field',
+                    'default' => 'ASC',
+                ],
             ],
         ]);
 
@@ -66,7 +76,10 @@ class Reisetopia_Hotels_Rest_API {
         $name = $request->get_param('name') ?? '';
         $location = $request->get_param('location') ?? '';
         $max_price = $request->get_param('max_price') ?? 0;
-        $hotels = Reisetopia_Hotels_Manager::filter_hotels($name, $location, $max_price);
+        $sort_attribute = $request->get_param('sort_attribute') ?? 'title';
+        $sort_order = strtoupper($request->get_param('sort_order') ?? 'ASC');
+
+        $hotels = Reisetopia_Hotels_Manager::filter_hotels($name, $location, $max_price, $sort_attribute, $sort_order);
 
         // Check if any hotels were found and format the response
         if (empty($hotels)) {

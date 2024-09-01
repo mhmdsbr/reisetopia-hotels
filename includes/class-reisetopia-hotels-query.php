@@ -118,4 +118,31 @@ class Reisetopia_Hotels_Query {
 
         return $hotel_data;
     }
+
+    /**
+     * Sets the sorting attribute and order for the query.
+     *
+     * @param string $attribute The attribute to sort by ('title', 'price_min', or 'price_max').
+     * @param string $order The sorting order ('ASC' or 'DESC').
+     */
+    public function set_sorting(string $attribute, string $order): void {
+        // Map the attribute to WP_Query's 'orderby' parameter
+        switch ($attribute) {
+            case 'price_min':
+                $this->args['orderby'] = 'meta_value_num';
+                $this->args['meta_key'] = 'price_min';
+                break;
+            case 'price_max':
+                $this->args['orderby'] = 'meta_value_num';
+                $this->args['meta_key'] = 'price_max';
+                break;
+            case 'title':
+            default:
+                $this->args['orderby'] = 'title';
+                break;
+        }
+
+        // Set the order (ASC or DESC)
+        $this->args['order'] = $order;
+    }
 }

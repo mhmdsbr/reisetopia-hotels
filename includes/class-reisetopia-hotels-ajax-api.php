@@ -22,7 +22,11 @@ class Reisetopia_Hotels_Ajax_API {
         $name = isset($_POST['name']) ? sanitize_text_field($_POST['name']) : '';
         $location = isset($_POST['location']) ? sanitize_text_field($_POST['location']) : '';
         $max_price = isset($_POST['max_price']) ? sanitize_text_field($_POST['max_price']) : '';
-        $hotels = Reisetopia_Hotels_Manager::filter_hotels($name, $location, $max_price);
+        $sort_attribute = isset($_POST['sort_attribute']) ? sanitize_text_field($_POST['sort_attribute']) : 'title';
+        $sort_order = isset($_POST['sort_order']) ? sanitize_text_field($_POST['sort_order']) : 'ASC';
+
+        // Fetch hotels using the Reisetopia_Hotels_Manager class with sorting
+        $hotels = Reisetopia_Hotels_Manager::filter_hotels($name, $location, $max_price, $sort_attribute, $sort_order);
 
         // Return the list of hotels
         wp_send_json_success($hotels);

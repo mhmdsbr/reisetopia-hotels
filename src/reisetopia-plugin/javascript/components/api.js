@@ -91,7 +91,9 @@ export const updateHotelsApi = () => {
     const filters = {
         name: $('#js-filter-name').val(),
         location: $('#js-filter-location').val(),
-        max_price: undefined
+        max_price: $('#js-filter-max-price').val(),
+        sort_attribute: $('#js-sort-attribute').val(),
+        sort_order: $('#js-sort-order').val()
     };
 
     // Clear the hotel list before fetching new data
